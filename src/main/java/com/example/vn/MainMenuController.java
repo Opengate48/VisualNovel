@@ -1,5 +1,6 @@
 package com.example.vn;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -7,7 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 
-public class HelloController {
+public class MainMenuController {
 
     @FXML
     private ResourceBundle resources;
@@ -27,14 +28,17 @@ public class HelloController {
     @FXML
     private Button playBtn;
 
+
     @FXML
     void kill(ActionEvent event) {
 
     }
 
     @FXML
-    void play(ActionEvent event) {
-
+    void play(ActionEvent event) throws IOException {
+        //Stage currentStage = (Stage) playBtn.getScene().getWindow();
+        VNApplication.changeScene("coommon-frame.fxml");
+        //currentStage.hide();
     }
 
     @FXML
