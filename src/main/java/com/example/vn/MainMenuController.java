@@ -8,6 +8,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 
+import static com.example.vn.VNApplication.currentFrameNumber;
+import static com.example.vn.VNApplication.currentStage;
+
 public class MainMenuController {
 
     @FXML
@@ -31,13 +34,14 @@ public class MainMenuController {
 
     @FXML
     void kill(ActionEvent event) {
-
+        currentStage.close();
     }
 
     @FXML
     void play(ActionEvent event) throws IOException {
+        currentFrameNumber = 1;
         //Stage currentStage = (Stage) playBtn.getScene().getWindow();
-        VNApplication.changeScene("coommon-frame.fxml");
+        VNApplication.changeScene("cf1_.fxml");
         //currentStage.hide();
     }
 
