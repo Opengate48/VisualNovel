@@ -48,7 +48,13 @@ public class BranchController {
     @FXML
     void chooseOne(ActionEvent event) throws IOException {
         currentFrameNumber += 1;
-        String postfix = currentFxmlName.substring(currentFxmlName.indexOf('_'), currentFxmlName.indexOf('.')) + "_1.fxml";
+        String postfix = new String();
+        if (currentFxmlName.substring(currentFxmlName.indexOf('_'), currentFxmlName.indexOf('.')).length() == 1){
+            postfix = "_1.fxml";
+        }
+        else{
+            postfix = currentFxmlName.substring(currentFxmlName.indexOf('_'), currentFxmlName.indexOf('.')) + "_1.fxml";
+        }
         Integer currentFrameNumberInt = currentFrameNumber;
         VNApplication.changeScene("cf" + currentFrameNumberInt.toString() + postfix);
         System.out.println(currentFrameNumber);
@@ -57,10 +63,17 @@ public class BranchController {
     @FXML
     void chooseTwo(ActionEvent event) throws IOException {
         currentFrameNumber += 1;
-        String postfix = currentFxmlName.substring(currentFxmlName.indexOf('_'), currentFxmlName.indexOf('.')) + "_2.fxml";
+        String postfix = new String();
+        if (currentFxmlName.substring(currentFxmlName.indexOf('_'), currentFxmlName.indexOf('.')).length() == 1){
+            postfix = "_2.fxml";
+        }
+        else{
+            postfix = currentFxmlName.substring(currentFxmlName.indexOf('_'), currentFxmlName.indexOf('.')) + "_2.fxml";
+        }
         Integer currentFrameNumberInt = currentFrameNumber;
+        System.out.println("cf" + currentFrameNumberInt.toString() + postfix);
         VNApplication.changeScene("cf" + currentFrameNumberInt.toString() + postfix);
-        System.out.println(currentFrameNumber);
+
     }
 
     @FXML

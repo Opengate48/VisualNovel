@@ -46,8 +46,8 @@ public class MainMenuController {
     }
 
     @FXML
-    void toSaves(ActionEvent event) {
-
+    void toSaves(ActionEvent event) throws IOException {
+        VNApplication.changeScene("saves_screen.fxml");
     }
 
     @FXML
