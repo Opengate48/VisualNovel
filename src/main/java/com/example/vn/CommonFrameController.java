@@ -1,9 +1,6 @@
 package com.example.vn;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -14,8 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.robot.Robot;
 
-import static com.example.vn.VNApplication.currentFxmlName;
-import static com.example.vn.VNApplication.currentFrameNumber;
+import static com.example.vn.VNApplication.*;
 
 public class CommonFrameController {
 
@@ -42,45 +38,53 @@ public class CommonFrameController {
     @FXML
     private Button toMMBtn;
 
-    //private static Integer curFrameNumber = 1;
-
     @FXML
     void nxt(ActionEvent event) throws IOException {
+        if (curFrameChaneIdx < frameChain.size()){
+            System.out.println(curFrameChaneIdx);
+            curFrameChaneIdx += 1;
+            changeScene(frameChain.get(curFrameChaneIdx - 1));
+            System.out.println(curFrameChaneIdx);
+            return;
+        }
+        System.out.println(curFrameChaneIdx);
         currentFrameNumber += 1;
         String postfix = currentFxmlName.substring(currentFxmlName.indexOf('_'));
         Integer currentFrameNumberInt = currentFrameNumber;
         VNApplication.changeScene("cf" + currentFrameNumberInt.toString() + postfix);
-        System.out.println(currentFxmlName);
-    }
 
+        frameChain.add("cf" + currentFrameNumberInt.toString() + postfix);
+        curFrameChaneIdx += 1;
+        System.out.println(curFrameChaneIdx);
+
+    }
     @FXML
-    void bck(ActionEvent event) {
+    void bck(ActionEvent event) throws IOException {
+        if (curFrameChaneIdx < 2){
+            return;
+        }
+        curFrameChaneIdx -= 1;
+        System.out.println(curFrameChaneIdx);
+        changeScene(frameChain.get(curFrameChaneIdx - 1));
 
     }
-
     @FXML
     void save(ActionEvent event) throws FileNotFoundException {
-        //Robot robot = new Robot();
-        //WritableImage image = new WritableImage(1021, 680);
-        //WritableImage imgReturn = robot.getScreenCapture(image, 100, 100, 100, 100);
-        //File file = new File("C:\\Users\\makar\\IdeaProjects\\VN\\src\\main\\resources\\saves\\save screenshots\\image.png");
-        //FileOutputStream fos = new FileOutputStream(file);
-        //fos.write(image);
+        File file = new File("src/main/resources/save/save.txt");
+        if (file != null){
+            System.out.println("Susu");
+        }
+        PrintWriter printWriter = new PrintWriter(file);
+        printWriter.println(currentFxmlName);
+        printWriter.print(currentFrameNumber);
+        printWriter.close();
     }
-
     @FXML
     void toMM(ActionEvent event) throws IOException {
+        stopMusic();
         VNApplication.changeScene("mm.fxml");
+        chooseMusic("mm_msc.mp3");
+        playMusic();
     }
-    @FXML
-    void initialize() {
-        assert bckBtn != null : "fx:id=\"bckBtn\" was not injected: check your FXML file 'cf1.fxml'.";
-        assert cfbg != null : "fx:id=\"cfbg\" was not injected: check your FXML file 'cf1.fxml'.";
-        assert nxtBtn != null : "fx:id=\"nxtBtn\" was not injected: check your FXML file 'cf1.fxml'.";
-        assert saveBtn != null : "fx:id=\"saveBtn\" was not injected: check your FXML file 'cf1.fxml'.";
-        assert toMMBtn != null : "fx:id=\"toMMBtn\" was not injected: check your FXML file 'cf1.fxml'.";
-
-    }
-
 }
 

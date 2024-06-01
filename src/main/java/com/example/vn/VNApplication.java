@@ -2,22 +2,43 @@ package com.example.vn;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import javax.sound.sampled.*;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
+import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VNApplication extends Application {
     static Stage currentStage;
     static String currentFxmlName;
     static int currentFrameNumber;
+    static List<String> frameChain = new ArrayList<>();
+    static int curFrameChaneIdx;
+    private static MediaPlayer mediaPlayer;
+    static void chooseMusic(String filename) {
+        File file = new File("src/main/resources/music/" + filename);
+        if(file != null){
+            String selectedFile = file.toURI().toString();
+            Media media = new Media(selectedFile);
+            mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        }
+    }
+    static void stopMusic() {
+        mediaPlayer.stop();
+    }
+    static void playMusic() {
+        mediaPlayer.play();
+    }
+
     @Override
-    public void start(Stage stage) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
+    public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(VNApplication.class.getResource("mm.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1021, 680);
         currentStage = new Stage();
@@ -26,18 +47,9 @@ public class VNApplication extends Application {
         stage.setScene(scene);
         currentStage = stage;
         stage.show();
-        AudioInputStream stream = AudioSystem.getAudioInputStream(
-                Objects.requireNonNull(
-                        VNApplication.class.getResource(
-                                "sample-3s.wav"
-                        )
-                )
-        );
-        AudioFormat format = stream.getFormat();
-        DataLine.Info info = new DataLine.Info(Clip.class, format);
-        Clip clip = (Clip) AudioSystem.getLine(info);
-        clip.open(stream);
-        clip.loop(5);
+        chooseMusic("mm_msc.mp3");
+        playMusic();
+        curFrameChaneIdx = 0;
     }
 
     public static void changeScene(String source) throws IOException {

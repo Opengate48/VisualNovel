@@ -1,15 +1,21 @@
 package com.example.vn;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Scanner;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 
-import static com.example.vn.VNApplication.currentFrameNumber;
-import static com.example.vn.VNApplication.currentStage;
+import static com.example.vn.VNApplication.*;
+import static com.example.vn.VNApplication.chooseMusic;
+
+
 
 public class MainMenuController {
 
@@ -39,23 +45,31 @@ public class MainMenuController {
 
     @FXML
     void play(ActionEvent event) throws IOException {
+        curFrameChaneIdx = 0;
         currentFrameNumber = 1;
-        //Stage currentStage = (Stage) playBtn.getScene().getWindow();
+        frameChain = new ArrayList<>();
         VNApplication.changeScene("cf1_.fxml");
-        //currentStage.hide();
+        chooseMusic("cf_msc.mp3");
+        playMusic();
+        frameChain.add("cf1_.fxml");
+        System.out.println(frameChain.get(curFrameChaneIdx));
+        curFrameChaneIdx += 1;
     }
 
     @FXML
     void toSaves(ActionEvent event) throws IOException {
-        VNApplication.changeScene("saves_screen.fxml");
+        File file = new File("src/main/resources/save/save.txt");
+        Scanner scanner = new Scanner(file);
+        currentFxmlName = scanner.nextLine();
+        currentFrameNumber = Integer.parseInt(scanner.nextLine());
+        scanner.close();
+        stopMusic();
+        chooseMusic("cf_msc.mp3");
+        playMusic();
+        frameChain = new ArrayList<>();
+        frameChain.add(currentFxmlName);
+        curFrameChaneIdx = 1;
+        System.out.println(currentFrameNumber);
+        changeScene(currentFxmlName);
     }
-
-    @FXML
-    void initialize() {
-        assert exitBtn != null : "fx:id=\"exitBtn\" was not injected: check your FXML file 'hello-view.fxml'.";
-        assert loadBtn != null : "fx:id=\"loadBtn\" was not injected: check your FXML file 'hello-view.fxml'.";
-        assert mmbg != null : "fx:id=\"mmbg\" was not injected: check your FXML file 'hello-view.fxml'.";
-        assert playBtn != null : "fx:id=\"playBtn\" was not injected: check your FXML file 'hello-view.fxml'.";
-    }
-
 }
